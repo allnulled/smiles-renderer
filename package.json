@@ -1,0 +1,12 @@
+{
+  "name": "rdkit.js-renderer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "docs/index.html",
+  "scripts": {
+    "test": "npx http-server -c-1 docs -o"
+  },
+  "keywords": [],
+  "author": "allnulled",
+  "license": "WTFPL"
+}

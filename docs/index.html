@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Smiles Drawer Example</title>
+    <meta name="description" content="A minimal smiles drawer example." />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+    *{box-sizing: border-box;}
+    html,body {padding: 0px; margin: 0px}
+    </style>
+    <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet"
+    />
+  </head>
+  <body style="font-family: 'Droid Sans'; ">
+
+    <div style="background-color: #E0E0E0; padding: 12px;">Renderizador de moléculas con SMILES</div>
+
+    <textarea spellcheck="false" id="example-input" name="example-input" style="width:100%;min-height:100px;font-size:14px;font-family:'Droid Sand';" placeholder="Pon tu código SMILES aquí."></textarea>
+    <canvas id="example-canvas" style="border: 1px solid #333; background-color: #f0f0f0;"></canvas>
+
+    <div style="position: fixed; top: auto; left: 0; right: 0; bottom: 0; font-size: 11px; padding: 8px; background-color: #E0E0E0;">
+        <div>Documentación previa:</div>
+        <div><a href="https://www.daylight.com/dayhtml/doc/theory/theory.smiles.html">https://www.daylight.com/dayhtml/doc/theory/theory.smiles.html</a></div>
+        <div><a href="https://archive.epa.gov/med/med_archive_03/web/html/smiles.html">https://archive.epa.gov/med/med_archive_03/web/html/smiles.html</a></div>
+        <div><a href="https://es.wikipedia.org/wiki/SMILES">https://es.wikipedia.org/wiki/SMILES</a></div>
+    </div>
+
+    <script src="https://unpkg.com/smiles-drawer@1.0.10/dist/smiles-drawer.min.js"></script>
+    <script>
+      let canvas = document.getElementById("example-canvas");
+      let input = document.getElementById("example-input");
+      let maxWidth = window.innerWidth - 1;
+      let options = {
+        width: maxWidth,
+        height: maxWidth,
+      };
+      canvas.width = options.width;
+      canvas.height = options.height;
+
+      // Initialize the drawer to draw to canvas
+      let smilesDrawer = new SmilesDrawer.Drawer(options);
+      // Alternatively, initialize the SVG drawer:
+      // let svgDrawer = new SmilesDrawer.SvgDrawer(options);
+
+      const renderMolecule = function() {
+        // Clean the input (remove unrecognized characters, such as spaces and tabs) and parse it
+        SmilesDrawer.parse(input.value, function(tree) {
+          // Draw to the canvas
+          smilesDrawer.draw(tree, "example-canvas", "light", false);
+          // Alternatively, draw to SVG:
+          // svgDrawer.draw(tree, 'output-svg', 'dark', false);
+        });
+      };
+
+      input.addEventListener("input", renderMolecule);
+
+      window.addEventListener("load", function() {
+        let params = new URLSearchParams(window.location.search);
+        let codigo = params.get('code');
+        if(!codigo) return;
+        input.value = codigo;
+        renderMolecule();
+      });
+
+    </script>
+  </body>
+</html>
